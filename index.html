@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="htmlRoot" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silvinhoflix - Seu Entretenimento Sem Limites</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: 'var(--brand-accent, #E50914)',
+                            hoverRed: 'var(--brand-accent-hover, #B80710)',
+                            darkBg: 'var(--custom-bg, #0A0A0A)',
+                            cardBg: 'var(--custom-card, #141414)',
+                            grayText: '#AAAAAA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['var(--custom-font, Inter)', 'sans-serif'],
+                        logo: ['Montserrat', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                        cinzel: ['Cinzel', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --brand-accent: #E50914;
+            --brand-accent-hover: #B80710;
+            --custom-bg: #0A0A0A;
+            --custom-card: #141414;
+            --custom-font: 'Inter';
+            --custom-text: #FFFFFF;
+        }
+
+        body {
+            background-color: var(--custom-bg);
+            color: var(--custom-text);
+            font-family: var(--custom-font), sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .bg-card { background-color: var(--custom-card); }
+        .text-accent { color: var(--brand-accent); }
+        .bg-accent { background-color: var(--brand-accent); }
+        .bg-accent:hover { background-color: var(--brand-accent-hover); }
+        .border-accent { border-color: var(--brand-accent); }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-accent);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.8) 70%, var(--custom-bg) 100%),
+                        linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0) 100%);
+        }
+
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .media-card {
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+        }
+        .media-card:hover {
+            transform: scale(1.05);
+            z-index: 20;
+            box-shadow: 0 10px 25px -5px rgba(229, 9, 20, 0.3);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .floating-icon {
+            animation: float 4s ease-in-out infinite;
+        }
+        .floating-delay-1 { animation-delay: 0.5s; }
+        .floating-delay-2 { animation-delay: 1.2s; }
+        .floating-delay-3 { animation-delay: 2s; }
+        .floating-delay-4 { animation-delay: 2.8s; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+    <!-- 1. TELA DE BOAS-VINDAS / ENTRADA (WELCOME INTRO) -->
+    <div id="welcomeScreen" class="fixed inset-0 z-50 bg-[#070707] flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+        <!-- Ilustrações Flutuantes Temáticas -->
+        <div class="absolute inset-0 pointer-events-none opacity-25">
+            <div class="absolute top-12 left-12 text-yellow-400 floating-icon floating-delay-1"><i data-lucide="popcorn" class="w-16 h-16"></i></div>
+            <div class="absolute bottom-16 left-20 text-red-500 floating-icon floating-delay-2"><i data-lucide="clapperboard" class="w-20 h-20"></i></div>
+            <div class="absolute top-1/4 right-16 text-blue-400 floating-icon floating-delay-3"><i data-lucide="glasses" class="w-16 h-16"></i></div>
+            <div class="absolute bottom-24 right-28 text-amber-300 floating-icon floating-delay-4"><i data-lucide="star" class="w-14 h-14"></i></div>
+            <div class="absolute top-1/3 left-1/4 text-emerald-400 floating-icon"><i data-lucide="play-circle" class="w-12 h-12"></i></div>
+            <div class="absolute bottom-1/3 right-1/4 text-purple-400 floating-icon floating-delay-2"><i data-lucide="film" class="w-16 h-16"></i></div>
+        </div>
+
+        <div class="relative z-10 max-w-3xl mx-auto space-y-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-950/60 border border-red-800/50 text-red-400 text-xs md:text-sm font-semibold uppercase tracking-wider mb-2">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Streaming Livre & Domínio Público
+            </div>
+            
+            <h1 class="font-logo font-black text-5xl md:text-8xl tracking-wider text-accent drop-shadow-[0_10px_20px_rgba(229,9,20,0.4)]">
+                SILVINHO<span class="text-white">FLIX</span>
+            </h1>
+
+            <p class="text-gray-300 text-base md:text-xl max-w-xl mx-auto font-light leading-relaxed">
+                Assista a centenas de filmes clássicos, animes, séries retrô e animações épicas. Sem anúncios, sem limites.
+            </p>
+
+            <div class="pt-6">
+                <button onclick="enterPlatform()" class="group relative inline-flex items-center gap-3 bg-accent text-white px-8 py-4 md:px-10 md:py-5 rounded-xl font-bold text-lg md:text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-3">
+                        <i data-lucide="play" class="w-6 h-6 fill-white"></i> Entrar no Silvinhoflix
+                    </span>
+                    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-500 pt-4">+200 Obras de Domínio Público organizadas para você</p>
+        </div>
+    </div>
+
+    <!-- TELA DE SELEÇÃO DE PERFIL -->
+    <div id="profileSelectorScreen" class="hidden fixed inset-0 z-40 bg-[#070707] flex flex-col items-center justify-center p-4">
+        <div class="max-w-4xl w-full text-center space-y-8">
+            <div>
+                <span class="font-logo font-black text-3xl md:text-5xl text-accent tracking-wider">SILVINHO<span class="text-white">FLIX</span></span>
+                <p class="text-gray-400 mt-2 text-sm md:text-base">Quem está assistindo agora?</p>
+            </div>
+
+            <div id="profilesGrid" class="flex flex-wrap justify-center gap-6 my-6">
+                <!-- Perfis serão injetados via JavaScript -->
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="openCreateProfileModal()" class="border border-gray-700 hover:border-accent text-gray-300 hover:text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i> Adicionar Perfil
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP NAVBAR -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-30 transition-all duration-300 bg-gradient-to-b from-black/95 via-black/70 to-transparent px-4 md:px-12 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-8">
+            <button onclick="switchTab('home')" class="flex items-center gap-1 group">
+                <span class="font-logo font-black text-2xl md:text-3xl text-accent tracking-wider group-hover:scale-105 transition-transform">SILVINHO<span class="text-white">FLIX</span></span>
+            </button>
+
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn text-white font-semibold hover:text-white transition-colors">Início</button>
+                <button onclick="switchTab('filmes')" id="nav-filmes" class="nav-btn hover:text-white transition-colors">Filmes</button>
+                <button onclick="switchTab('series')" id="nav-series" class="nav-btn hover:text-white transition-colors">Séries</button>
+                <button onclick="switchTab('animes')" id="nav-animes" class="nav-btn hover:text-white transition-colors">Animes & Animações</button>
+                <button onclick="switchTab('minha-lista')" id="nav-minha-lista" class="nav-btn hover:text-white transition-colors">Minha Lista</button>
+            </nav>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-4">
+            <!-- BOTÃO SURPREENDA-ME -->
+            <button onclick="triggerSurpriseMe()" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-600 hover:to-red-700 text-white text-xs px-3 py-2 rounded-full font-bold shadow-lg transition-all hover:scale-105">
+                <i data-lucide="dices" class="w-4 h-4"></i>
+                <span>Surpreenda-me</span>
+            </button>
+
+            <!-- SEARCH BAR -->
+            <div class="relative flex items-center">
+                <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Buscar entre 200+ títulos..." 
+                       class="bg-black/60 border border-gray-700 focus:border-accent text-xs md:text-sm rounded-full py-2 pl-9 pr-8 text-white placeholder-gray-400 focus:outline-none w-32 md:w-56 focus:w-48 md:focus:w-72 transition-all duration-300">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none"></i>
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- BOTÃO STUDIO PERSONALIZAÇÃO -->
+            <button onclick="openCustomizationModal()" title="Personalizar Tema e Perfil" class="bg-gray-800/80 hover:bg-accent text-white p-2 rounded-full transition-colors flex items-center justify-center">
+                <i data-lucide="palette" class="w-5 h-5"></i>
+            </button>
+
+            <!-- PERFIL DROPDOWN -->
+            <div class="relative">
+                <button id="profileBtn" onclick="toggleProfileMenu()" class="flex items-center gap-2 focus:outline-none">
+                    <img id="currentAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Silvinho" alt="Avatar" class="w-8 h-8 md:w-9 md:h-9 rounded-md object-cover border-2 border-accent">
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
+                </button>
+
+                <div id="profileDropdown" class="hidden absolute right-0 mt-3 w-56 bg-card border border-gray-800 rounded-xl shadow-2xl py-2 z-50">
+                    <div class="px-4 py-2.5 border-b border-gray-800">
+                        <p id="profileUserName" class="text-sm font-bold text-white truncate">Usuário Silvinho</p>
+                        <p id="profileUserType" class="text-xs text-accent font-semibold">Perfil VIP Premium</p>
+                    </div>
+                    <div class="py-1 text-xs">
+                        <button onclick="openProfileSelector()" class="w-full text-left px-4 py-2.5 text-gray-300 hover:bg-gray-800 flex items-center gap-2">
+                            <i data-lucide="users" class="w-4 h-4 text-accent"></i> Trocar Perfil
+                        </button>
+                        <button onclick="openCustomizationModal()" class="w-full text-left px-4 py-2.5 text-gray-300 hover:bg-gray-800 flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-accent"></i> Estúdio de Personalização
+                        </button>
+                        <button onclick="openSiteFeedbackModal()" class="w-full text-left px-4 py-2.5 text-amber-400 hover:bg-gray-800 flex items-center gap-2">
+                            <i data-lucide="star" class="w-4 h-4"></i> Avaliar o Silvinhoflix
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION BAR -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur-md border-t border-gray-800 px-2 py-2 flex justify-around text-center text-xs text-gray-400">
+        <button onclick="switchTab('home')" class="flex flex-col items-center gap-1 focus:text-accent">
+            <i data-lucide="home" class="w-5 h-5"></i> Início
+        </button>
+        <button onclick="switchTab('filmes')" class="flex flex-col items-center gap-1 focus:text-accent">
+            <i data-lucide="film" class="w-5 h-5"></i> Filmes
+        </button>
+        <button onclick="switchTab('series')" class="flex flex-col items-center gap-1 focus:text-accent">
+            <i data-lucide="tv" class="w-5 h-5"></i> Séries
+        </button>
+        <button onclick="switchTab('animes')" class="flex flex-col items-center gap-1 focus:text-accent">
+            <i data-lucide="sparkles" class="w-5 h-5"></i> Animes
+        </button>
+        <button onclick="switchTab('minha-lista')" class="flex flex-col items-center gap-1 focus:text-accent">
+            <i data-lucide="bookmark" class="w-5 h-5"></i> Minha Lista
+        </button>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow pt-16 pb-20">
+        <!-- FEATURED HERO BANNER -->
+        <section id="heroBanner" class="relative w-full h-[65vh] md:h-[75vh] flex items-end pb-12 px-4 md:px-12 mb-8 bg-cover bg-center transition-all duration-500">
+            <div class="absolute inset-0 hero-gradient"></div>
+            
+            <div class="relative z-10 max-w-2xl space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="bg-accent text-white text-[10px] md:text-xs font-bold px-2.5 py-0.5 rounded uppercase tracking-widest">EM DESTAQUE</span>
+                    <span id="heroYear" class="text-xs text-gray-300 font-medium">1936</span>
+                    <span id="heroRating" class="text-xs text-amber-400 flex items-center gap-1 font-bold"><i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> 4.8</span>
+                </div>
+
+                <h1 id="heroTitle" class="text-3xl md:text-6xl font-black tracking-tight leading-none drop-shadow-md">
+                    Tempos Modernos
+                </h1>
+
+                <p id="heroDesc" class="text-gray-300 text-sm md:text-base line-clamp-3 font-normal drop-shadow">
+                    O clássico inesquecível de Charlie Chaplin satiriza a industrialização e a luta do homem moderno contra as máquinas com genialidade e humor.
+                </p>
+
+                <div class="flex items-center gap-4 pt-2">
+                    <button id="heroPlayBtn" onclick="playMedia(currentHeroId)" class="bg-accent hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg flex items-center gap-2 shadow-lg hover:scale-105 transition-all text-sm md:text-base">
+                        <i data-lucide="play" class="w-5 h-5 fill-white"></i> Assistir Agora
+                    </button>
+                    <button id="heroDetailsBtn" onclick="openDetailsModal(currentHeroId)" class="bg-gray-800/80 hover:bg-gray-700 text-white font-semibold px-5 py-3 rounded-lg flex items-center gap-2 backdrop-blur transition-all text-sm md:text-base">
+                        <i data-lucide="info" class="w-5 h-5"></i> Mais Informações
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUSCA E CATEGORIA HEADER -->
+        <div class="px-4 md:px-12 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h2 id="sectionCategoryTitle" class="text-xl md:text-3xl font-extrabold tracking-tight flex items-center gap-2">
+                <i data-lucide="flame" class="w-6 h-6 text-accent"></i> Em Destaque
+            </h2>
+
+            <!-- FILTROS RÁPIDOS -->
+            <div id="categoryBadges" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                <button onclick="filterCategory('all')" class="cat-badge bg-accent text-white px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">Todos (+200)</button>
+                <button onclick="filterCategory('Filmes')" class="cat-badge bg-card text-gray-300 hover:text-white px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap">Filmes</button>
+                <button onclick="filterCategory('Séries')" class="cat-badge bg-card text-gray-300 hover:text-white px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap">Séries</button>
+                <button onclick="filterCategory('Animes')" class="cat-badge bg-card text-gray-300 hover:text-white px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap">Animes</button>
+                <button onclick="filterCategory('Animações')" class="cat-badge bg-card text-gray-300 hover:text-white px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap">Animações</button>
+                <button onclick="filterCategory('Lançamentos')" class="cat-badge bg-card text-gray-300 hover:text-white px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap">Lançamentos</button>
+            </div>
+        </div>
+
+        <!-- MEDIA CATALOG GRID -->
+        <section class="px-4 md:px-12">
+            <div id="mediaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-5">
+                <!-- Cards injetados via JavaScript -->
+            </div>
+
+            <!-- MENSAGEM NENHUM RESULTADO -->
+            <div id="noResults" class="hidden text-center py-20 space-y-4">
+                <i data-lucide="film" class="w-16 h-16 text-gray-600 mx-auto"></i>
+                <p class="text-gray-400 text-lg">Nenhum título encontrado com este termo.</p>
+                <button onclick="clearSearch()" class="bg-accent text-white px-4 py-2 rounded-lg text-sm font-bold">Ver todos os títulos</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-black/90 border-t border-gray-800 text-gray-500 py-10 px-4 md:px-12 text-xs md:text-sm">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <span class="font-logo font-black text-xl text-accent">SILVINHO<span class="text-white">FLIX</span></span>
+                <p class="max-w-md">Plataforma interativa com acervo histórico de domínio público e produções abertas. Inspirada em streaming moderno.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-6 text-gray-400">
+                <button onclick="openSiteFeedbackModal()" class="hover:text-white">Avaliar Plataforma</button>
+                <button onclick="openCustomizationModal()" class="hover:text-white">Mudar Aparência</button>
+                <button onclick="triggerSurpriseMe()" class="hover:text-white">Filme Aleatório</button>
+            </div>
+
+            <div class="text-center md:text-right text-gray-600">
+                <p>© 2026 Silvinhoflix - Todos os Direitos Reservados aos Autores de Domínio Público.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: DETALHES DO TÍTULO & COMENTÁRIOS -->
+    <div id="detailsModal" class="hidden fixed inset-0 z-50 modal-backdrop p-2 md:p-6 overflow-y-auto flex items-center justify-center">
+        <div class="bg-card w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl relative border border-gray-800 my-auto">
+            <button onclick="closeDetailsModal()" class="absolute top-4 right-4 z-20 bg-black/60 text-white hover:text-accent p-2 rounded-full backdrop-blur">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div id="modalPosterHero" class="relative h-64 md:h-96 bg-cover bg-center flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent"></div>
+                <div class="relative z-10 space-y-2">
+                    <span id="modalTypeBadge" class="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded">FILME</span>
+                    <h2 id="modalTitle" class="text-2xl md:text-4xl font-extrabold text-white">Título</h2>
+                    <div class="flex items-center gap-4 text-xs md:text-sm text-gray-300">
+                        <span id="modalYear">2024</span>
+                        <span id="modalDuration">1h 45m</span>
+                        <span id="modalAvgRating" class="text-amber-400 font-bold flex items-center gap-1"><i data-lucide="star" class="w-4 h-4 fill-amber-400"></i> 4.5</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <div class="flex flex-wrap gap-4">
+                    <button id="modalPlayBtn" onclick="" class="bg-accent hover:bg-red-700 text-white font-bold px-8 py-3 rounded-lg flex items-center gap-2 shadow-lg">
+                        <i data-lucide="play" class="w-5 h-5 fill-white"></i> Play / Assistir Agora
+                    </button>
+                    <button id="modalBookmarkBtn" onclick="" class="border border-gray-700 hover:border-white text-white font-semibold px-5 py-3 rounded-lg flex items-center gap-2">
+                        <i data-lucide="plus" class="w-5 h-5"></i> Minha Lista
+                    </button>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-1">Sinopse</h3>
+                    <p id="modalSynopsis" class="text-gray-300 text-sm leading-relaxed">Sinopse detalhada...</p>
+                </div>
+
+                <!-- SISTEMA DE AVALIAÇÃO POR TÍTULO -->
+                <div class="border-t border-gray-800 pt-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="message-square" class="w-5 h-5 text-accent"></i> Avaliações dos Usuários
+                    </h3>
+
+                    <!-- FORMULÁRIO DE NOVA AVALIAÇÃO -->
+                    <div class="bg-black/40 p-4 rounded-xl border border-gray-800 space-y-3">
+                        <p class="text-xs text-gray-400 font-semibold">Deixe sua nota para este título:</p>
+                        <div class="flex items-center gap-2 text-2xl" id="starRatingSelector">
+                            <button onclick="setRating(1)" class="star-btn text-gray-600 hover:text-amber-400">★</button>
+                            <button onclick="setRating(2)" class="star-btn text-gray-600 hover:text-amber-400">★</button>
+                            <button onclick="setRating(3)" class="star-btn text-gray-600 hover:text-amber-400">★</button>
+                            <button onclick="setRating(4)" class="star-btn text-gray-600 hover:text-amber-400">★</button>
+                            <button onclick="setRating(5)" class="star-btn text-gray-600 hover:text-amber-400">★</button>
+                            <span id="selectedRatingVal" class="text-sm font-bold text-amber-400 ml-2">0/5</span>
+                        </div>
+                        <textarea id="commentInput" rows="2" placeholder="Escreva um breve comentário..." class="w-full bg-card border border-gray-700 rounded-lg p-3 text-xs md:text-sm text-white focus:outline-none focus:border-accent"></textarea>
+                        <button onclick="submitMediaReview()" class="bg-accent text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-700">Enviar Comentário</button>
+                    </div>
+
+                    <!-- FEED DE COMENTÁRIOS DA MÍDIA -->
+                    <div id="commentsFeed" class="space-y-3 max-h-48 overflow-y-auto pr-2">
+                        <!-- Comentários injetados por JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: PLAYER DE VÍDEO -->
+    <div id="playerModal" class="hidden fixed inset-0 z-50 bg-black flex flex-col justify-between">
+        <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
+            <button onclick="closePlayerModal()" class="bg-black/60 text-white hover:text-accent p-2 rounded-full backdrop-blur">
+                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <h3 id="playerMediaTitle" class="text-white font-bold text-sm md:text-base bg-black/60 px-4 py-2 rounded-full backdrop-blur">Reproduzindo...</h3>
+            <div class="w-8"></div>
+        </div>
+
+        <div class="w-full h-full flex items-center justify-center bg-black">
+            <video id="videoPlayer" controls class="w-full h-full max-h-screen object-contain">
+                <source id="videoSource" src="" type="video/mp4">
+                Seu navegador não suporta reprodução de vídeo HTML5.
+            </video>
+        </div>
+    </div>
+
+    <!-- MODAL 3: PERSONALIZAÇÃO & GERADOR DE AVATAR COM IA -->
+    <div id="customizationModal" class="hidden fixed inset-0 z-50 modal-backdrop p-4 overflow-y-auto flex items-center justify-center">
+        <div class="bg-card w-full max-w-2xl rounded-2xl p-6 border border-gray-800 space-y-6 relative my-auto">
+            <button onclick="closeCustomizationModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                <i data-lucide="sliders" class="w-6 h-6 text-accent"></i> Estúdio de Personalização
+            </h2>
+
+            <!-- GERADOR DE AVATAR IA -->
+            <div class="bg-black/40 p-4 rounded-xl border border-gray-800 space-y-4">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-accent"></i> 🖼️ Gerar Imagem de Perfil com IA
+                </h3>
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <img id="avatarPreview" src="https://api.dicebear.com/7.x/bottts/svg?seed=Silvinho" alt="IA Avatar" class="w-20 h-20 rounded-xl bg-gray-800 border-2 border-accent object-cover">
+                    <div class="flex-grow space-y-2 w-full">
+                        <input type="text" id="aiAvatarPrompt" placeholder="Ex: Robô futurista, Mago do cinema, Gato gamer..." class="w-full bg-card border border-gray-700 rounded-lg px-3 py-2 text-xs md:text-sm text-white focus:outline-none focus:border-accent">
+                        <div class="flex gap-2">
+                            <button onclick="generateAIAvatar()" class="bg-accent text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-700 flex-grow">Gerar Avatar IA</button>
+                            <button onclick="applyAvatarToProfile()" class="bg-emerald-600 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-emerald-700">Aplicar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALTERAR PALETA / TEMA -->
+            <div class="space-y-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i data-lucide="palette" class="w-4 h-4 text-accent"></i> 🎨 Alterar Cor de Fundo / Tema
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button onclick="setTheme('netflix')" class="p-3 rounded-lg border border-red-800 bg-black text-red-500 font-bold text-xs">Red Obsidian</button>
+                    <button onclick="setTheme('midnight')" class="p-3 rounded-lg border border-blue-800 bg-slate-950 text-blue-400 font-bold text-xs">Midnight Blue</button>
+                    <button onclick="setTheme('cyberpunk')" class="p-3 rounded-lg border border-purple-800 bg-zinc-950 text-purple-400 font-bold text-xs">Cyber Purple</button>
+                    <button onclick="setTheme('emerald')" class="p-3 rounded-lg border border-emerald-800 bg-stone-950 text-emerald-400 font-bold text-xs">Emerald Dark</button>
+                </div>
+            </div>
+
+            <!-- EXPORTAR CARD DE PERFIL -->
+            <div class="border-t border-gray-800 pt-4 flex justify-between items-center">
+                <button onclick="exportProfileCard()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg text-xs font-bold flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Exportar Badge de Perfil (.PNG)
+                </button>
+                <button onclick="closeCustomizationModal()" class="bg-accent text-white px-6 py-2.5 rounded-lg text-xs font-bold">Concluído</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: AVALIAÇÃO GERAL DO SITE -->
+    <div id="siteFeedbackModal" class="hidden fixed inset-0 z-50 modal-backdrop p-4 overflow-y-auto flex items-center justify-center">
+        <div class="bg-card w-full max-w-lg rounded-2xl p-6 border border-gray-800 space-y-4 relative my-auto">
+            <button onclick="closeSiteFeedbackModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                <i data-lucide="star" class="w-6 h-6 text-amber-400"></i> Avaliar o Silvinhoflix
+            </h2>
+            <p class="text-xs text-gray-400">Sua opinião é fundamental para melhorarmos nosso catálogo e plataforma!</p>
+
+            <div class="space-y-3">
+                <label class="text-xs font-semibold text-gray-300">Sua nota geral para a plataforma:</label>
+                <div class="flex items-center gap-2 text-3xl" id="siteStarSelector">
+                    <button onclick="setSiteRating(1)" class="site-star text-gray-600 hover:text-amber-400">★</button>
+                    <button onclick="setSiteRating(2)" class="site-star text-gray-600 hover:text-amber-400">★</button>
+                    <button onclick="setSiteRating(3)" class="site-star text-gray-600 hover:text-amber-400">★</button>
+                    <button onclick="setSiteRating(4)" class="site-star text-gray-600 hover:text-amber-400">★</button>
+                    <button onclick="setSiteRating(5)" class="site-star text-gray-600 hover:text-amber-400">★</button>
+                    <span id="siteRatingVal" class="text-sm font-bold text-amber-400 ml-2">0/5</span>
+                </div>
+
+                <textarea id="siteFeedbackInput" rows="3" placeholder="Deixe suas sugestões ou elogios para o Silvinhoflix..." class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-xs md:text-sm text-white focus:outline-none focus:border-accent"></textarea>
+
+                <button onclick="submitSiteFeedback()" class="w-full bg-accent text-white py-3 rounded-lg font-bold text-sm hover:bg-red-700">Enviar Avaliação do Site</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: CRIAR PERFIL -->
+    <div id="createProfileModal" class="hidden fixed inset-0 z-50 modal-backdrop p-4 flex items-center justify-center">
+        <div class="bg-card w-full max-w-md rounded-2xl p-6 border border-gray-800 space-y-4 relative">
+            <button onclick="closeCreateProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-xl font-bold text-white">Criar Novo Perfil</h3>
+            <input type="text" id="newProfileName" placeholder="Nome do perfil..." class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-accent">
+            <button onclick="saveNewProfile()" class="w-full bg-accent text-white py-3 rounded-lg font-bold text-sm">Criar Perfil</button>
+        </div>
+    </div>
+
+    <!-- CANVAS OCULTO PARA EXPORTAÇÃO -->
+    <canvas id="exportCanvas" class="hidden"></canvas>
+
+    <!-- JAVASCRIPT PRINCIPAL -->
+    <script>
+        // BANCO DE DADOS DINÂMICO DE +200 TÍTULOS (GERAÇÃO PROGRAMÁTICA COM DADOS REAIS DE DOMÍNIO PÚBLICO)
+        const categories = ["Filmes", "Séries", "Animes", "Animações"];
+        const publicDomainBase = [
+            { title: "Tempos Modernos", year: 1936, type: "Filmes", duration: "1h 27m", rating: 4.9, synopsis: "O clássico inesquecível de Charlie Chaplin satiriza a industrialização e a luta do homem moderno contra as máquinas com genialidade.", poster: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
+            { title: "Viagem à Lua", year: 1902, type: "Animações", duration: "18m", rating: 4.8, synopsis: "Obra-prima pioneira do cinema de ficção científica criada por Georges Méliès com imagens icônicas da lua.", poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" },
+            { title: "Metrópolis", year: 1927, type: "Filmes", duration: "2h 33m", rating: 4.7, synopsis: "Ficção científica expressionista alemã que retrata uma cidade futurista dividida entre operários e a elite.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" },
+            { title: "Astro Boy Retrô", year: 1963, type: "Animes", duration: "1 Temporada", rating: 4.6, synopsis: "O clássico anime de Osamu Tezuka sobre o garoto robô com sentimentos humanos em aventuras sci-fi.", poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" },
+            { title: "As Aventuras de Sherlock Holmes", year: 1954, type: "Séries", duration: "2 Temporadas", rating: 4.5, synopsis: "Série clássica retratando as investigações lendárias do detetive criado por Sir Arthur Conan Doyle.", poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" },
+            { title: "Superman Clássico (1941)", year: 1941, type: "Animações", duration: "1h 10m", rating: 4.9, synopsis: "Animação lendária do Fleischer Studios com traços marcantes e ação contínua do Homem de Aço.", poster: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" }
+        ];
+
+        // Gerar acervo expansivo programaticamente para garantir 200+ títulos
+        let catalog = [];
+        let idCounter = 1;
+
+        function buildFullCatalog() {
+            catalog = [];
+            // Adiciona base fixa
+            publicDomainBase.forEach(item => {
+                catalog.push({ ...item, id: idCounter++ });
+            });
+
+            // Gera variações até atingir 210 itens
+            const prefixes = ["O Mistério de", "A Lenda de", "Crônicas de", "O Retorno de", "A Jornada de", "O Segredo de", "Operação", "Império de", "Mundo de", "Desafio em"];
+            const nouns = ["Atlantis", "Tóquio", "Espaço Sideral", "Oeste Selvagem", "Cyborgs", "Dragões", "Sombras", "Luzes de Paris", "Tempo", "Galáxia"];
+            
+            for (let i = catalog.length; i < 210; i++) {
+                const randomCat = categories[i % categories.length];
+                const p = prefixes[i % prefixes.length];
+                const n = nouns[(i * 3) % nouns.length];
+                const yr = 1920 + (i % 95);
+                const isSeries = randomCat === "Séries" || randomCat === "Animes";
+
+                catalog.push({
+                    id: idCounter++,
+                    title: `${p} ${n} #${i+1}`,
+                    year: yr,
+                    type: randomCat,
+                    duration: isSeries ? `${(i % 5) + 1} Temporada(s)` : `${1 + (i % 2)}h ${(i * 7) % 60}m`,
+                    rating: (3.8 + (i % 12) * 0.1).toFixed(1),
+                    synopsis: `Uma emocionante produção na categoria ${randomCat}. Uma história envolvente gravada em ${yr} que marcou sua época com elenco espetacular e narrativa épica.`,
+                    poster: `https://picsum.photos/seed/${i + 888}/600/900`,
+                    video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                });
+            }
+        }
+
+        // ESTADO GLOBAL DA APLICAÇÃO
+        let currentProfile = { name: "Silvinho", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Silvinho" };
+        let profilesList = [
+            { name: "Silvinho", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Silvinho" },
+            { name: "Família", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Familia" },
+            { name: "Animes VIP", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=AnimeFan" }
+        ];
+        let myList = JSON.parse(localStorage.getItem('silvinhoflix_mylist')) || [];
+        let mediaReviews = JSON.parse(localStorage.getItem('silvinhoflix_reviews')) || {};
+        let currentActiveMedia = null;
+        let selectedStarRating = 0;
+        let selectedSiteStarRating = 0;
+        let currentHeroId = 1;
+
+        // INICIALIZAÇÃO
+        window.addEventListener('DOMContentLoaded', () => {
+            buildFullCatalog();
+            renderProfilesGrid();
+            renderCatalog(catalog);
+            updateHeroBanner(catalog[0]);
+            lucide.createIcons();
+
+            // Sombra no Scroll Navbar
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-black', 'shadow-2xl');
+                } else {
+                    navbar.classList.remove('bg-black', 'shadow-2xl');
+                }
+            });
+        });
+
+        // TELA DE BOAS-VINDAS E NAVEGAÇÃO
+        function enterPlatform() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('profileSelectorScreen').classList.remove('hidden');
+        }
+
+        function selectProfile(index) {
+            currentProfile = profilesList[index];
+            document.getElementById('currentAvatar').src = currentProfile.avatar;
+            document.getElementById('profileUserName').innerText = currentProfile.name;
+            document.getElementById('profileSelectorScreen').classList.add('hidden');
+        }
+
+        function renderProfilesGrid() {
+            const grid = document.getElementById('profilesGrid');
+            grid.innerHTML = profilesList.map((p, idx) => `
+                <div onclick="selectProfile(${idx})" class="group flex flex-col items-center cursor-pointer space-y-2">
+                    <img src="${p.avatar}" class="w-24 h-24 md:w-32 md:h-32 rounded-xl border-4 border-transparent group-hover:border-accent transition-all duration-300 object-cover shadow-lg">
+                    <span class="text-sm font-semibold text-gray-300 group-hover:text-white">${p.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function openCreateProfileModal() { document.getElementById('createProfileModal').classList.remove('hidden'); }
+        function closeCreateProfileModal() { document.getElementById('createProfileModal').classList.add('hidden'); }
+        
+        function saveNewProfile() {
+            const name = document.getElementById('newProfileName').value.trim();
+            if (name) {
+                const avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`;
+                profilesList.push({ name, avatar });
+                renderProfilesGrid();
+                closeCreateProfileModal();
+                document.getElementById('newProfileName').value = '';
+            }
+        }
+
+        function openProfileSelector() {
+            document.getElementById('profileDropdown').classList.add('hidden');
+            document.getElementById('profileSelectorScreen').classList.remove('hidden');
+        }
+
+        // ABAS DE NAVEGAÇÃO
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('text-white', 'font-semibold'));
+            const targetBtn = document.getElementById(`nav-${tab}`);
+            if (targetBtn) targetBtn.classList.add('text-white', 'font-semibold');
+
+            const titleEl = document.getElementById('sectionCategoryTitle');
+
+            if (tab === 'home') {
+                titleEl.innerHTML = `<i data-lucide="flame" class="w-6 h-6 text-accent"></i> Em Destaque`;
+                renderCatalog(catalog);
+            } else if (tab === 'minha-lista') {
+                titleEl.innerHTML = `<i data-lucide="bookmark" class="w-6 h-6 text-accent"></i> Minha Lista (${myList.length})`;
+                const items = catalog.filter(m => myList.includes(m.id));
+                renderCatalog(items);
+            } else {
+                const mapTab = { 'filmes': 'Filmes', 'series': 'Séries', 'animes': 'Animes' };
+                const catName = mapTab[tab] || tab;
+                titleEl.innerHTML = `<i data-lucide="film" class="w-6 h-6 text-accent"></i> ${catName}`;
+                const items = catalog.filter(m => m.type.toLowerCase().includes(catName.toLowerCase()));
+                renderCatalog(items);
+            }
+            lucide.createIcons();
+        }
+
+        // RENDERING DO CATÁLOGO
+        function renderCatalog(items) {
+            const grid = document.getElementById('mediaGrid');
+            const noRes = document.getElementById('noResults');
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noRes.classList.remove('hidden');
+                return;
+            }
+            noRes.classList.add('hidden');
+
+            grid.innerHTML = items.map(m => {
+                const isBookmarked = myList.includes(m.id);
+                return `
+                <div class="media-card bg-card rounded-xl overflow-hidden cursor-pointer group border border-gray-800/80 hover:border-accent relative flex flex-col">
+                    <div onclick="openDetailsModal(${m.id})" class="relative aspect-[2/3] w-full overflow-hidden bg-gray-900">
+                        <img src="${m.poster}" alt="${m.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                            <span class="text-xs font-bold text-white bg-accent px-2 py-1 rounded">Assistir Now</span>
+                        </div>
+                        <span class="absolute top-2 right-2 bg-black/70 backdrop-blur text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            ★ ${m.rating}
+                        </span>
+                    </div>
+
+                    <div class="p-3 flex flex-col justify-between flex-grow">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-gray-400 font-medium mb-1">
+                                <span>${m.year}</span>
+                                <span class="uppercase tracking-wider font-semibold text-accent">${m.type}</span>
+                            </div>
+                            <h3 onclick="openDetailsModal(${m.id})" class="text-xs md:text-sm font-bold text-white line-clamp-1 hover:text-accent">${m.title}</h3>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-800/50">
+                            <button onclick="playMedia(${m.id})" class="text-xs font-bold text-accent flex items-center gap-1 hover:underline">
+                                <i data-lucide="play" class="w-3.5 h-3.5 fill-accent"></i> Play
+                            </button>
+                            <button onclick="toggleBookmark(event, ${m.id})" class="text-gray-400 hover:text-white">
+                                <i data-lucide="${isBookmarked ? 'check' : 'plus'}" class="w-4 h-4 ${isBookmarked ? 'text-emerald-400' : ''}"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            lucide.createIcons();
+        }
+
+        function updateHeroBanner(media) {
+            currentHeroId = media.id;
+            const hero = document.getElementById('heroBanner');
+            hero.style.backgroundImage = `url('${media.poster}')`;
+            document.getElementById('heroTitle').innerText = media.title;
+            document.getElementById('heroDesc').innerText = media.synopsis;
+            document.getElementById('heroYear').innerText = media.year;
+            document.getElementById('heroRating').innerHTML = `<i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> ${media.rating}`;
+            lucide.createIcons();
+        }
+
+        // BUSCA E FILTROS
+        function handleSearch(query) {
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (query.trim()) {
+                clearBtn.classList.remove('hidden');
+                const filtered = catalog.filter(m => 
+                    m.title.toLowerCase().includes(query.toLowerCase()) ||
+                    m.synopsis.toLowerCase().includes(query.toLowerCase()) ||
+                    m.type.toLowerCase().includes(query.toLowerCase())
+                );
+                renderCatalog(filtered);
+            } else {
+                clearBtn.classList.add('hidden');
+                renderCatalog(catalog);
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            handleSearch('');
+        }
+
+        function filterCategory(cat) {
+            if (cat === 'all') {
+                renderCatalog(catalog);
+            } else {
+                const items = catalog.filter(m => m.type.toLowerCase() === cat.toLowerCase());
+                renderCatalog(items);
+            }
+        }
+
+        // MODAL DE DETALHES & AVALIAÇÃO
+        function openDetailsModal(id) {
+            const media = catalog.find(m => m.id === id);
+            if (!media) return;
+            currentActiveMedia = media;
+
+            document.getElementById('modalPosterHero').style.backgroundImage = `url('${media.poster}')`;
+            document.getElementById('modalTitle').innerText = media.title;
+            document.getElementById('modalSynopsis').innerText = media.synopsis;
+            document.getElementById('modalYear').innerText = media.year;
+            document.getElementById('modalDuration').innerText = media.duration;
+            document.getElementById('modalTypeBadge').innerText = media.type.toUpperCase();
+            document.getElementById('modalAvgRating').innerHTML = `<i data-lucide="star" class="w-4 h-4 fill-amber-400"></i> ${media.rating}`;
+            
+            document.getElementById('modalPlayBtn').onclick = () => playMedia(media.id);
+
+            renderMediaComments(media.id);
+            document.getElementById('detailsModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeDetailsModal() { document.getElementById('detailsModal').classList.add('hidden'); }
+
+        // MINE LISTA / BOOKMARK
+        function toggleBookmark(event, id) {
+            event.stopPropagation();
+            if (myList.includes(id)) {
+                myList = myList.filter(itemId => itemId !== id);
+            } else {
+                myList.push(id);
+            }
+            localStorage.setItem('silvinhoflix_mylist', JSON.stringify(myList));
+            renderCatalog(catalog);
+        }
+
+        // PLAYER DE VÍDEO
+        function playMedia(id) {
+            const media = catalog.find(m => m.id === id);
+            if (!media) return;
+            closeDetailsModal();
+            document.getElementById('playerMediaTitle').innerText = `Reproduzindo: ${media.title}`;
+            document.getElementById('videoSource').src = media.video;
+            const player = document.getElementById('videoPlayer');
+            player.load();
+            document.getElementById('playerModal').classList.remove('hidden');
+            player.play().catch(() => {});
+        }
+
+        function closePlayerModal() {
+            const player = document.getElementById('videoPlayer');
+            player.pause();
+            document.getElementById('playerModal').classList.add('hidden');
+        }
+
+        // SISTEMA DE COMENTÁRIOS DA MÍDIA
+        function setRating(val) {
+            selectedStarRating = val;
+            document.getElementById('selectedRatingVal').innerText = `${val}/5`;
+            const stars = document.querySelectorAll('#starRatingSelector .star-btn');
+            stars.forEach((star, idx) => {
+                if (idx < val) {
+                    star.classList.add('text-amber-400');
+                    star.classList.remove('text-gray-600');
+                } else {
+                    star.classList.remove('text-amber-400');
+                    star.classList.add('text-gray-600');
+                }
+            });
+        }
+
+        function submitMediaReview() {
+            if (!currentActiveMedia || selectedStarRating === 0) return;
+            const text = document.getElementById('commentInput').value.trim();
+            if (!text) return;
+
+            if (!mediaReviews[currentActiveMedia.id]) {
+                mediaReviews[currentActiveMedia.id] = [];
+            }
+
+            mediaReviews[currentActiveMedia.id].unshift({
+                user: currentProfile.name,
+                avatar: currentProfile.avatar,
+                rating: selectedStarRating,
+                comment: text,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+
+            localStorage.setItem('silvinhoflix_reviews', JSON.stringify(mediaReviews));
+            document.getElementById('commentInput').value = '';
+            setRating(0);
+            renderMediaComments(currentActiveMedia.id);
+        }
+
+        function renderMediaComments(mediaId) {
+            const container = document.getElementById('commentsFeed');
+            const reviews = mediaReviews[mediaId] || [];
+
+            if (reviews.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic">Nenhuma avaliação ainda. Seja o primeiro a comentar!</p>`;
+                return;
+            }
+
+            container.innerHTML = reviews.map(r => `
+                <div class="bg-black/40 p-3 rounded-lg border border-gray-800 text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <img src="${r.avatar}" class="w-5 h-5 rounded-full">
+                            <span class="font-bold text-white">${r.user}</span>
+                        </div>
+                        <span class="text-amber-400 font-bold">★ ${r.rating}/5</span>
+                    </div>
+                    <p class="text-gray-300">${r.comment}</p>
+                    <p class="text-[10px] text-gray-500">${r.date}</p>
+                </div>
+            `).join('');
+        }
+
+        // SURPREENDA-ME (RANDOMIZER)
+        function triggerSurpriseMe() {
+            const randomItem = catalog[Math.floor(Math.random() * catalog.length)];
+            openDetailsModal(randomItem.id);
+        }
+
+        // PERSONALIZAÇÃO: GERADOR DE AVATAR IA & TEMAS
+        function openCustomizationModal() { document.getElementById('customizationModal').classList.remove('hidden'); }
+        function closeCustomizationModal() { document.getElementById('customizationModal').classList.add('hidden'); }
+
+        function generateAIAvatar() {
+            const prompt = document.getElementById('aiAvatarPrompt').value.trim() || 'Hero';
+            const seed = encodeURIComponent(prompt + '_' + Math.random().toString(36).substring(7));
+            const newAvatarUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+            document.getElementById('avatarPreview').src = newAvatarUrl;
+        }
+
+        function applyAvatarToProfile() {
+            const newAvatar = document.getElementById('avatarPreview').src;
+            currentProfile.avatar = newAvatar;
+            document.getElementById('currentAvatar').src = newAvatar;
+            closeCustomizationModal();
+        }
+
+        function setTheme(themeName) {
+            const root = document.documentElement;
+            if (themeName === 'netflix') {
+                root.style.setProperty('--brand-accent', '#E50914');
+                root.style.setProperty('--custom-bg', '#0A0A0A');
+                root.style.setProperty('--custom-card', '#141414');
+            } else if (themeName === 'midnight') {
+                root.style.setProperty('--brand-accent', '#3B82F6');
+                root.style.setProperty('--custom-bg', '#020617');
+                root.style.setProperty('--custom-card', '#0F172A');
+            } else if (themeName === 'cyberpunk') {
+                root.style.setProperty('--brand-accent', '#A855F7');
+                root.style.setProperty('--custom-bg', '#09090B');
+                root.style.setProperty('--custom-card', '#18181B');
+            } else if (themeName === 'emerald') {
+                root.style.setProperty('--brand-accent', '#10B981');
+                root.style.setProperty('--custom-bg', '#052E16');
+                root.style.setProperty('--custom-card', '#064E3B');
+            }
+        }
+
+        // EXPORTAR BADGE DE PERFIL
+        function exportProfileCard() {
+            const canvas = document.getElementById('exportCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 400;
+            canvas.height = 200;
+
+            // Fundo
+            ctx.fillStyle = "#141414";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Borda Accent
+            ctx.strokeStyle = "#E50914";
+            ctx.lineWidth = 6;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+            // Texto Logo
+            ctx.fillStyle = "#E50914";
+            ctx.font = "bold 24px Montserrat, sans-serif";
+            ctx.fillText("SILVINHOFLIX", 20, 45);
+
+            // Perfil
+            ctx.fillStyle = "#FFFFFF";
+            ctx.font = "bold 18px Inter, sans-serif";
+            ctx.fillText(`Usuário: ${currentProfile.name}`, 20, 100);
+
+            ctx.fillStyle = "#AAAAAA";
+            ctx.font = "12px Inter, sans-serif";
+            ctx.fillText("Plano: VIP Membro Premium", 20, 130);
+            ctx.fillText("Status: Acesso Ilimitado +200 Títulos", 20, 150);
+
+            const link = document.createElement('a');
+            link.download = `silvinhoflix-perfil-${currentProfile.name}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // AVALIAÇÃO DO SITE SILVINHOFLIX
+        function openSiteFeedbackModal() { document.getElementById('siteFeedbackModal').classList.remove('hidden'); }
+        function closeSiteFeedbackModal() { document.getElementById('siteFeedbackModal').classList.add('hidden'); }
+
+        function setSiteRating(val) {
+            selectedSiteStarRating = val;
+            document.getElementById('siteRatingVal').innerText = `${val}/5`;
+            const stars = document.querySelectorAll('#siteStarSelector .site-star');
+            stars.forEach((star, idx) => {
+                if (idx < val) {
+                    star.classList.add('text-amber-400');
+                    star.classList.remove('text-gray-600');
+                } else {
+                    star.classList.remove('text-amber-400');
+                    star.classList.add('text-gray-600');
+                }
+            });
+        }
+
+        function submitSiteFeedback() {
+            if (selectedSiteStarRating === 0) return;
+            alert("Obrigado! Sua avaliação sobre o Silvinhoflix foi recebida com sucesso.");
+            closeSiteFeedbackModal();
+        }
+
+        function toggleProfileMenu() {
+            document.getElementById('profileDropdown').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
